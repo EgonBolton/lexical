@@ -41,7 +41,7 @@ describe(`LexicalCollaborationPlugin`, () => {
   });
 
   test(`providerFactory called only once`, () => {
-    const providerFactory = jest.fn(
+    const providerFactory = vi.fn(
       (id: string, yjsDocMap: Map<string, Y.Doc>) => {
         const doc = new Y.Doc();
         yjsDocMap.set(id, doc);

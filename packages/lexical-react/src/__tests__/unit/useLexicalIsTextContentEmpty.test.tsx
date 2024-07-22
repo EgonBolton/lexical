@@ -35,7 +35,7 @@ describe('useLexicalIsTextContentEmpty', () => {
     document.body.removeChild(container!);
     container = null;
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   function useLexicalEditor(rootElementRef: React.RefObject<HTMLDivElement>) {

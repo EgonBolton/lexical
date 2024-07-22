@@ -53,7 +53,7 @@ describe('LexicalHistory tests', () => {
     }
     container = null;
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   // Shared instance across tests

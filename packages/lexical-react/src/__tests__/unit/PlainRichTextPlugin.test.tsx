@@ -63,7 +63,7 @@ describe('LexicalNodeHelpers tests', () => {
     document.body.removeChild(container!);
     container = null;
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   for (const plugin of ['PlainTextPlugin', 'RichTextPlugin']) {

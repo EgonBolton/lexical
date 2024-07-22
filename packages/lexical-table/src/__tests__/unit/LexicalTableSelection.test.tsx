@@ -49,7 +49,7 @@ describe('table selection', () => {
       () =>
         createTestEditor({
           nodes: [],
-          onError: onError || jest.fn(),
+          onError: onError || vi.fn(),
           theme: {
             text: {
               bold: 'editor-text-bold',

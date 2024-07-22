@@ -44,7 +44,7 @@ describe('@lexical/list tests', () => {
     // @ts-ignore
     container = null;
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   // Shared instance across tests

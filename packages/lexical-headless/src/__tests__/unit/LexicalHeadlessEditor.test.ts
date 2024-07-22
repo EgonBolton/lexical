@@ -123,10 +123,10 @@ describe('LexicalHeadlessEditor', () => {
   });
 
   it('can register listeners', async () => {
-    const onUpdate = jest.fn();
-    const onCommand = jest.fn();
-    const onTransform = jest.fn();
-    const onTextContent = jest.fn();
+    const onUpdate = vi.fn();
+    const onCommand = vi.fn();
+    const onTransform = vi.fn();
+    const onTextContent = vi.fn();
 
     editor.registerUpdateListener(onUpdate);
     editor.registerCommand(

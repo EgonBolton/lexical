@@ -9,12 +9,12 @@ import {mergeRegister} from '@lexical/utils';
 
 describe('mergeRegister', () => {
   it('calls all of the clean-up functions', () => {
-    const cleanup = jest.fn();
+    const cleanup = vi.fn();
     mergeRegister(cleanup, cleanup)();
     expect(cleanup).toHaveBeenCalledTimes(2);
   });
   it('calls the clean-up functions in reverse order', () => {
-    const cleanup = jest.fn();
+    const cleanup = vi.fn();
     mergeRegister(cleanup.bind(null, 1), cleanup.bind(null, 2))();
     expect(cleanup.mock.calls.map(([v]) => v)).toEqual([2, 1]);
   });

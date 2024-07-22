@@ -27,8 +27,8 @@ import {initializeClipboard, TestComposer} from 'lexical/src/__tests__/utils';
 import {createRoot} from 'react-dom/client';
 import * as ReactTestUtils from 'shared/react-test-utils';
 
-jest.mock('shared/environment', () => {
-  const originalModule = jest.requireActual('shared/environment');
+vi.mock('shared/environment', async () => {
+  const originalModule = await vi.importActual('shared/environment');
   return {...originalModule, IS_FIREFOX: true};
 });
 

@@ -83,7 +83,7 @@ describe('LexicalEditor tests', () => {
     // @ts-ignore
     container = null;
 
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   function useLexicalEditor(
@@ -95,7 +95,7 @@ describe('LexicalEditor tests', () => {
       () =>
         createTestEditor({
           nodes: nodes ?? [],
-          onError: onError || jest.fn(),
+          onError: onError || vi.fn(),
           theme: {
             text: {
               bold: 'editor-text-bold',
@@ -145,7 +145,7 @@ describe('LexicalEditor tests', () => {
       });
       expect(editor.read(() => $getRoot().getTextContent())).toEqual('');
       expect(editor.read(() => $getEditor())).toBe(editor);
-      const onUpdate = jest.fn();
+      const onUpdate = vi.fn();
       editor.update(
         () => {
           const root = $getRoot();
@@ -201,7 +201,7 @@ describe('LexicalEditor tests', () => {
           node.replace($createTextNode('Transforms work!'));
         }
       });
-      const onUpdate = jest.fn();
+      const onUpdate = vi.fn();
       editor.update(
         () => {
           const root = $getRoot();
@@ -268,7 +268,7 @@ describe('LexicalEditor tests', () => {
     container.appendChild(rootElement);
 
     const initialEditor = createTestEditor({
-      onError: jest.fn(),
+      onError: vi.fn(),
     });
 
     initialEditor.update(() => {
@@ -297,7 +297,7 @@ describe('LexicalEditor tests', () => {
 
     editor = createTestEditor({
       editorState: initialEditorState,
-      onError: jest.fn(),
+      onError: vi.fn(),
     });
     editor.setRootElement(rootElement);
 
@@ -309,7 +309,7 @@ describe('LexicalEditor tests', () => {
 
   it('Should handle nested updates in the correct sequence', async () => {
     init();
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
 
     let log: Array<string> = [];
 
@@ -454,7 +454,7 @@ describe('LexicalEditor tests', () => {
 
   it('nested update after selection update triggers exactly 1 update', async () => {
     init();
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     editor.registerUpdateListener(onUpdate);
     editor.update(() => {
       $setSelection($createRangeSelection());
@@ -477,7 +477,7 @@ describe('LexicalEditor tests', () => {
   it('update does not call onUpdate callback when no dirty nodes', () => {
     init();
 
-    const fn = jest.fn();
+    const fn = vi.fn();
     editor.update(
       () => {
         //
@@ -497,7 +497,7 @@ describe('LexicalEditor tests', () => {
       root.append($createParagraphNode());
     });
 
-    const fn = jest.fn();
+    const fn = vi.fn();
 
     await editor.focus(fn);
 
@@ -691,7 +691,7 @@ describe('LexicalEditor tests', () => {
   it('text transform runs when node is removed', async () => {
     init();
 
-    const executeTransform = jest.fn();
+    const executeTransform = vi.fn();
     let hasBeenRemoved = false;
     const removeListener = editor.registerNodeTransform(TextNode, (node) => {
       if (hasBeenRemoved) {
@@ -757,8 +757,8 @@ describe('LexicalEditor tests', () => {
 
       textNode.getWritable();
 
-      executeParagraphNodeTransform = jest.fn();
-      executeTextNodeTransform = jest.fn();
+      executeParagraphNodeTransform = vi.fn();
+      executeTextNodeTransform = vi.fn();
     });
 
     expect(executeParagraphNodeTransform).toHaveBeenCalledTimes(0);
@@ -862,7 +862,7 @@ describe('LexicalEditor tests', () => {
   });
 
   it('Detects infinite recursivity on transforms', async () => {
-    const errorListener = jest.fn();
+    const errorListener = vi.fn();
     init(errorListener);
 
     const boldListener = editor.registerNodeTransform(TextNode, (node) => {
@@ -918,7 +918,7 @@ describe('LexicalEditor tests', () => {
   });
 
   it('Should be able to recover from an update error', async () => {
-    const errorListener = jest.fn();
+    const errorListener = vi.fn();
     init(errorListener);
     editor.update(() => {
       const root = $getRoot();
@@ -955,8 +955,8 @@ describe('LexicalEditor tests', () => {
   });
 
   it('Should be able to handle a change in root element', async () => {
-    const rootListener = jest.fn();
-    const updateListener = jest.fn();
+    const rootListener = vi.fn();
+    const updateListener = vi.fn();
 
     function TestBase({changeElement}: {changeElement: boolean}) {
       editor = useMemo(() => createTestEditor(), []);
@@ -1075,7 +1075,7 @@ describe('LexicalEditor tests', () => {
     });
 
     it('Should correctly render React component into Lexical node #1', async () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
 
       function Test() {
         editor = useMemo(() => createTestEditor(), []);
@@ -1119,7 +1119,7 @@ describe('LexicalEditor tests', () => {
     });
 
     it('Should correctly render React component into Lexical node #2', async () => {
-      const listener = jest.fn();
+      const listener = vi.fn();
 
       function Test({divKey}: {divKey: number}): JSX.Element {
         function TestPlugin() {
@@ -1569,7 +1569,7 @@ describe('LexicalEditor tests', () => {
   it('can subscribe and unsubscribe from commands and the callback is fired', () => {
     init();
 
-    const commandListener = jest.fn();
+    const commandListener = vi.fn();
     const command = createCommand('TEST_COMMAND');
     const payload = 'testPayload';
     const removeCommandListener = editor.registerCommand(
@@ -1597,8 +1597,8 @@ describe('LexicalEditor tests', () => {
   it('removes the command from the command map when no listener are attached', () => {
     init();
 
-    const commandListener = jest.fn();
-    const commandListenerTwo = jest.fn();
+    const commandListener = vi.fn();
+    const commandListenerTwo = vi.fn();
     const command = createCommand('TEST_COMMAND');
     const removeCommandListener = editor.registerCommand(
       command,
@@ -1677,7 +1677,7 @@ describe('LexicalEditor tests', () => {
   it('textcontent listener', async () => {
     init();
 
-    const fn = jest.fn();
+    const fn = vi.fn();
     editor.update(() => {
       const root = $getRoot();
       const paragraph = $createParagraphNode();
@@ -1738,8 +1738,8 @@ describe('LexicalEditor tests', () => {
   it('mutation listener', async () => {
     init();
 
-    const paragraphNodeMutations = jest.fn();
-    const textNodeMutations = jest.fn();
+    const paragraphNodeMutations = vi.fn();
+    const textNodeMutations = vi.fn();
     editor.registerMutationListener(ParagraphNode, paragraphNodeMutations, {
       skipInitialization: false,
     });
@@ -1816,7 +1816,7 @@ describe('LexicalEditor tests', () => {
     });
 
     const initialEditorState = editor.getEditorState();
-    const textNodeMutations = jest.fn();
+    const textNodeMutations = vi.fn();
     editor.registerMutationListener(TextNode, textNodeMutations, {
       skipInitialization: false,
     });
@@ -1888,8 +1888,8 @@ describe('LexicalEditor tests', () => {
       reactRoot.render(<TestBase />);
     });
 
-    const textNodeMutations = jest.fn();
-    const textNodeMutationsB = jest.fn();
+    const textNodeMutations = vi.fn();
+    const textNodeMutationsB = vi.fn();
     editor.registerMutationListener(TextNode, textNodeMutations, {
       skipInitialization: false,
     });
@@ -1985,8 +1985,8 @@ describe('LexicalEditor tests', () => {
       reactRoot.render(<TestBase />);
     });
 
-    const textNodeMutations = jest.fn();
-    const textNodeMutationsB = jest.fn();
+    const textNodeMutations = vi.fn();
+    const textNodeMutationsB = vi.fn();
     editor.registerMutationListener(TestTextNode, textNodeMutations, {
       skipInitialization: false,
     });
@@ -2025,8 +2025,8 @@ describe('LexicalEditor tests', () => {
   it('mutation listeners does not trigger when other node types are mutated', async () => {
     init();
 
-    const paragraphNodeMutations = jest.fn();
-    const textNodeMutations = jest.fn();
+    const paragraphNodeMutations = vi.fn();
+    const textNodeMutations = vi.fn();
     editor.registerMutationListener(ParagraphNode, paragraphNodeMutations, {
       skipInitialization: false,
     });
@@ -2045,7 +2045,7 @@ describe('LexicalEditor tests', () => {
   it('mutation listeners with normalization', async () => {
     init();
 
-    const textNodeMutations = jest.fn();
+    const textNodeMutations = vi.fn();
     editor.registerMutationListener(TextNode, textNodeMutations, {
       skipInitialization: false,
     });
@@ -2091,8 +2091,8 @@ describe('LexicalEditor tests', () => {
   it('mutation "update" listener', async () => {
     init();
 
-    const paragraphNodeMutations = jest.fn();
-    const textNodeMutations = jest.fn();
+    const paragraphNodeMutations = vi.fn();
+    const textNodeMutations = vi.fn();
 
     editor.registerMutationListener(ParagraphNode, paragraphNodeMutations, {
       skipInitialization: false,
@@ -2155,8 +2155,8 @@ describe('LexicalEditor tests', () => {
     let tableCellKey: string;
     let tableRowKey: string;
 
-    const tableCellMutations = jest.fn();
-    const tableRowMutations = jest.fn();
+    const tableCellMutations = vi.fn();
+    const tableRowMutations = vi.fn();
 
     editor.registerMutationListener(TableCellNode, tableCellMutations, {
       skipInitialization: false,
@@ -2209,7 +2209,7 @@ describe('LexicalEditor tests', () => {
   it('editable listener', () => {
     init();
 
-    const editableFn = jest.fn();
+    const editableFn = vi.fn();
     editor.registerEditableListener(editableFn);
 
     expect(editor.isEditable()).toBe(true);
@@ -2224,12 +2224,12 @@ describe('LexicalEditor tests', () => {
   });
 
   it('does not add new listeners while triggering existing', async () => {
-    const updateListener = jest.fn();
-    const mutationListener = jest.fn();
-    const nodeTransformListener = jest.fn();
-    const textContentListener = jest.fn();
-    const editableListener = jest.fn();
-    const commandListener = jest.fn();
+    const updateListener = vi.fn();
+    const mutationListener = vi.fn();
+    const nodeTransformListener = vi.fn();
+    const textContentListener = vi.fn();
+    const editableListener = vi.fn();
+    const commandListener = vi.fn();
     const TEST_COMMAND = createCommand('TEST_COMMAND');
 
     init();
@@ -2312,9 +2312,9 @@ describe('LexicalEditor tests', () => {
 
   it('calls mutation listener with initial state', async () => {
     // TODO add tests for node replacement
-    const mutationListenerA = jest.fn();
-    const mutationListenerB = jest.fn();
-    const mutationListenerC = jest.fn();
+    const mutationListenerA = vi.fn();
+    const mutationListenerB = vi.fn();
+    const mutationListenerC = vi.fn();
     init();
 
     editor.registerMutationListener(TextNode, mutationListenerA, {
@@ -2380,7 +2380,7 @@ describe('LexicalEditor tests', () => {
 
   it('can use discrete for synchronous updates', () => {
     init();
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     editor.registerUpdateListener(onUpdate);
     editor.update(
       () => {
@@ -2402,7 +2402,7 @@ describe('LexicalEditor tests', () => {
 
   it('can use discrete after a non-discrete update to flush the entire queue', () => {
     const headless = createTestHeadlessEditor();
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     headless.registerUpdateListener(onUpdate);
     headless.update(() => {
       $getRoot().append(
@@ -2459,7 +2459,7 @@ describe('LexicalEditor tests', () => {
 
   it('can use discrete in a nested update to flush the entire queue', () => {
     init();
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     editor.registerUpdateListener(onUpdate);
     editor.update(() => {
       $getRoot().append(
@@ -2513,7 +2513,7 @@ describe('LexicalEditor tests', () => {
 
   describe('node replacement', () => {
     it('should work correctly', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const newEditor = createTestEditor({
         nodes: [
@@ -2549,7 +2549,7 @@ describe('LexicalEditor tests', () => {
     });
 
     it('should fail if node keys are re-used', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const newEditor = createTestEditor({
         nodes: [
@@ -2586,7 +2586,7 @@ describe('LexicalEditor tests', () => {
     });
 
     it('node transform to the nodes specified by "replace" should not be applied to the nodes specified by "with" when "withKlass" is not specified', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const newEditor = createTestEditor({
         nodes: [
@@ -2608,7 +2608,7 @@ describe('LexicalEditor tests', () => {
 
       newEditor.setRootElement(container);
 
-      const mockTransform = jest.fn();
+      const mockTransform = vi.fn();
       const removeTransform = newEditor.registerNodeTransform(
         TextNode,
         mockTransform,
@@ -2633,7 +2633,7 @@ describe('LexicalEditor tests', () => {
     });
 
     it('node transform to the nodes specified by "replace" should be applied also to the nodes specified by "with" when "withKlass" is specified', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const newEditor = createTestEditor({
         nodes: [
@@ -2656,7 +2656,7 @@ describe('LexicalEditor tests', () => {
 
       newEditor.setRootElement(container);
 
-      const mockTransform = jest.fn();
+      const mockTransform = vi.fn();
       const removeTransform = newEditor.registerNodeTransform(
         TextNode,
         mockTransform,
@@ -2682,9 +2682,9 @@ describe('LexicalEditor tests', () => {
   });
 
   it('recovers from reconciler failure and trigger proper prev editor state', async () => {
-    const updateListener = jest.fn();
-    const textListener = jest.fn();
-    const onError = jest.fn();
+    const updateListener = vi.fn();
+    const textListener = vi.fn();
+    const onError = vi.fn();
     const updateError = new Error('Failed updateDOM');
 
     init(onError);
@@ -2700,7 +2700,7 @@ describe('LexicalEditor tests', () => {
 
     // Cause reconciler error in update dom, so that it attempts to fallback by
     // reseting editor and rerendering whole content
-    jest.spyOn(ParagraphNode.prototype, 'updateDOM').mockImplementation(() => {
+    vi.spyOn(ParagraphNode.prototype, 'updateDOM').mockImplementation(() => {
       throw updateError;
     });
 
@@ -2720,7 +2720,7 @@ describe('LexicalEditor tests', () => {
   });
 
   it('should call importDOM methods only once', async () => {
-    jest.spyOn(ParagraphNode, 'importDOM');
+    vi.spyOn(ParagraphNode, 'importDOM');
 
     class CustomParagraphNode extends ParagraphNode {
       static getType() {

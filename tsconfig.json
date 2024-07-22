@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES2019",
     "lib": ["esnext", "dom", "dom.iterable"],
+    "types": ["vitest/globals"],
     "module": "esnext",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
@@ -9,7 +10,7 @@
     "noEmit": true,
     "strict": true,
     "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "libdefs/globals"],
+    "typeRoots": ["node_modules/@types", "libdefs/globals", "./node_modules"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowJs": true,
